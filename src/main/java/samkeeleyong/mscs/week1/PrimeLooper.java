@@ -1,23 +1,27 @@
 package samkeeleyong.mscs.week1;
 
+import static samkeeleyong.mscs.week1.PrimeAssignment.*;
+
+import java.math.BigInteger;
 class PrimeLooper implements Runnable{
 
     public void run(){
-        if(ThreadMeta.number % 2 == 0){
-            meta.lastProcessedNumber = 2;
-            System.out.printf("%d is divisible by %d\n", ThreadMeta.number, 2);
+    	meta.lastProcessedNumber = ZERO;
+    	if(ThreadMeta.number.mod(TWO).equals(ZERO)){
+    		meta.lastProcessedNumber = TWO;
+    		System.out.printf("%s is divisible by %s\n", ThreadMeta.number.toString(), TWO.toString());
             PrimeAssignment.IS_COMPOSITE = true;
-        }
-
-        // loop through [3 - 1000] or [4564 - 6547]
-        for(int i = meta.start; i <= meta.end && !PrimeAssignment.IS_COMPOSITE; i+=2){
-            meta.lastProcessedNumber = i;
-
-            if(ThreadMeta.number % i == 0){
-                System.out.printf("%d is divisible by %d\n", ThreadMeta.number, i);
-                PrimeAssignment.IS_COMPOSITE = true;
-            }
-        }
+    	}
+    	
+        // loop through [3 - 1000] or [4564 - 6547]    	
+    	for(BigInteger i = meta.start; i.compareTo(meta.end) == -1 && !PrimeAssignment.IS_COMPOSITE; i = i.add(TWO) ){
+    		meta.lastProcessedNumber = i;
+    		
+    		if(ThreadMeta.number.mod(i).equals(ZERO)){
+                System.out.printf("%s is divisible by %s\n", ThreadMeta.number.toString(), i.toString());
+                PrimeAssignment.IS_COMPOSITE = true;    			
+    		}
+    	}
     }
 
     ThreadMeta meta;

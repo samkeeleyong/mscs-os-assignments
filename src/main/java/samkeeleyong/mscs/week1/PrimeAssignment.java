@@ -1,8 +1,9 @@
 package samkeeleyong.mscs.week1;
 
 
-import java.util.*;
-import java.lang.IllegalStateException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Sam Ong
@@ -12,6 +13,10 @@ import java.lang.IllegalStateException;
 public class PrimeAssignment {
     public static boolean IS_COMPOSITE = false;
     
+    public static BigInteger ZERO = BigInteger.ZERO;
+    public static BigInteger ONE = BigInteger.ONE;
+    public static BigInteger TWO = new BigInteger("2");
+    public static BigInteger THREE = new BigInteger("3");
 
     /*
      * 
@@ -25,8 +30,8 @@ public class PrimeAssignment {
     public static void main(String[] args) throws InterruptedException{
 //        int number = 465321,
 //            numberOfThreads = 3;
-    	int number = Integer.parseInt(args[0]),
-    		numberOfThreads = Integer.parseInt(args[1]);
+    	BigInteger number = new BigInteger(args[0]),
+    		       numberOfThreads = new BigInteger(args[1]);
     		
         
         List<ThreadMeta> metaList = delegateThreads(number, numberOfThreads);        
@@ -43,11 +48,11 @@ public class PrimeAssignment {
         }
 
         // After all the threads finish
-        System.out.printf("%d is %s\n", number, IS_COMPOSITE ? "composite":
+        System.out.printf("%s is %s\n", number.toString(), IS_COMPOSITE ? "composite":
                                                                "prime");
 
         for(ThreadMeta meta: metaList){
-            System.out.printf("\n%s's last processed number is %d", meta.thread.getName(), meta.lastProcessedNumber);
+            System.out.printf("\n%s's last processed number is %s", meta.thread.getName(), meta.lastProcessedNumber.toString());
         }
     }
 
@@ -59,34 +64,33 @@ public class PrimeAssignment {
 	 *  @param number - The number to check if prime
 	 *  @param number - number of threads
      */
-    public static List<ThreadMeta> delegateThreads(int number, int numberOfThreads){
-        int start = 3,
-            end = (int)(Math.ceil(Math.sqrt(number)));
+    public static List<ThreadMeta> delegateThreads(BigInteger number, BigInteger NUMBER_OF_THREADS){
+        BigInteger start = THREE,
+                   end = number; 
+        
         List<ThreadMeta> metaList = new ArrayList<>();
         
-        if(numberOfThreads >= end){
-            throw new IllegalStateException("Number of Threads too big!");
-        }
+        BigInteger total_length = end.subtract(start);
+        BigInteger subrange_length = total_length.divide(NUMBER_OF_THREADS);
+        BigInteger current_start = start;
 
-        int total_length = end - start;
-        int subrange_length = (int) (Math.ceil((total_length / numberOfThreads)));
-        int current_start = start;
+        for(BigInteger i = ZERO; i.compareTo(NUMBER_OF_THREADS) == -1; i = i.add(ONE)){
+        	ThreadMeta meta = new ThreadMeta();
 
-        for (int i = 1; i <= numberOfThreads; ++i) {
-
-            ThreadMeta meta = new ThreadMeta();
-            meta.start = current_start % 2 == 0 ? current_start - 1:
-                                                  current_start;
-            meta.end = (current_start + subrange_length);
-            metaList.add(meta);
-
-            current_start += subrange_length + 1;
+        	meta.start = current_start.mod(TWO).equals(BigInteger.ZERO) ? current_start.subtract(ONE):
+        																  current_start;
+        	meta.end = current_start.add(subrange_length);
+        	metaList.add(meta);
+        	current_start = current_start.add(subrange_length).add(ONE);
         }
 
         // hack because i've spent too much time already.
         metaList.get(metaList.size() - 1).end = end;
 
-        System.out.println("Ranges of the threads:" + metaList);
+        System.out.println("Ranges of the threads:");
+        for(ThreadMeta meta: metaList){
+        	System.out.println(meta);
+        }
 		return metaList;
     }
 }
