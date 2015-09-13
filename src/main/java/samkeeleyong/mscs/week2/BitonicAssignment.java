@@ -187,16 +187,23 @@ public class BitonicAssignment {
 	public static boolean ROUND_CONTINUE = false;
 	public static boolean IS_FINISHED = false;
 	public static List<Comparer> COMPARER_LIST = new ArrayList<Comparer>();
-	public static int TOTAL_BLOCKS;
+	public static int TOTAL_BLOCKS_PART2;
 	
 	public static void main(String[] args) throws InterruptedException{
 		new BitonicAssignment().process();
 	}
 	
 	public void process() throws InterruptedException{
+		
+		/*
+		 * 
+		 *  Setup
+		 */
 		System.out.println("Starting");
 		System.out.println(N);
-		TOTAL_BLOCKS = (int) (Math.log(N) / Math.log(2)); 
+		
+		TOTAL_BLOCKS_PART2 = (int) (Math.log(N) / Math.log(2));
+		
 //		// create the comparers(threads)
 		for(int i = 1; i <= N/2; i++){
 			Comparer comparer = new Comparer("Thread" + i, this);
@@ -210,13 +217,17 @@ public class BitonicAssignment {
 			c.buildInstructionSet();	
 		}
 		
-		// start the threads
+		
+		/*
+		 * 
+		 *  Magic part	
+		 */
 		for(Comparer c: COMPARER_LIST){
 			System.out.println(c.getName() + ": " + c.instructions.toString());
 			c.start();
 		}
 
-		for(int i = 1; i <= TOTAL_BLOCKS; i++){
+		for(int i = 1; i <= TOTAL_BLOCKS_PART2; i++){
 			
 			while(BitonicAssignment.ROUND_COUNTER.get() < N/2){
 				// the other threads are still working			

@@ -20,6 +20,7 @@ public class Comparer extends Thread{
 			
 			toSwaps.add(Integer.parseInt(pair[0]));
 			toSwaps.add(Integer.parseInt(pair[1]));
+			toSwaps.add(Integer.parseInt(pair[2]));
 		}
 	}
 
@@ -48,17 +49,31 @@ public class Comparer extends Thread{
 	public void compare(){
 		int xpos = 0;
 		int ypos = 0;
+		int direction;
 		try{
 			xpos = toSwaps.get(myCounter);
 			ypos = toSwaps.get(++myCounter);
+			direction = toSwaps.get(++myCounter);
+			
+			if(direction == 1){
+				if (NUMBERS[xpos] > NUMBERS[ypos]) {
+					int temp = NUMBERS[xpos];
+					NUMBERS[xpos] = NUMBERS[ypos];
+					NUMBERS[ypos] = temp;
+				}	
+			}
+			if(direction == 0){
+				if (NUMBERS[xpos] < NUMBERS[ypos]) {
+					int temp = NUMBERS[xpos];
+					NUMBERS[xpos] = NUMBERS[ypos];
+					NUMBERS[ypos] = temp;
+				}					
+			}
+			
 		} catch(IndexOutOfBoundsException e){
 			System.out.println(myCounter);
 		}
-		if (NUMBERS[xpos] > NUMBERS[ypos]) {
-			int temp = NUMBERS[xpos];
-			NUMBERS[xpos] = NUMBERS[ypos];
-			NUMBERS[ypos] = temp;
-		}
+		
 		myCounter++;
 		BitonicAssignment.ROUND_COUNTER.incrementAndGet();
 	}
