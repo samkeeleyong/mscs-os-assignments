@@ -1,6 +1,5 @@
 package samkeeleyong.mscs.week2;
 
-import static samkeeleyong.mscs.week2.BitonicAssignment.COMPARER_LIST;
 import static samkeeleyong.mscs.week2.BitonicAssignment.N;
 import static samkeeleyong.mscs.week2.BitonicAssignment.NUMBERS;
 
@@ -16,17 +15,28 @@ public class InstructionSetsGenerator {
 	
 	public static void part1(){
 		int x = 2;
+		int numberOfSections = 1; 
+		int direction = 1;
+		int sectionCounter = 2;
 		
 		while(x != BitonicAssignment.N){	// BLOCK LOOP 
-			int j = 1; 
-			int direction = 1;
+			System.out.println("\n\n\nThis Block: x is :" + x);
+			System.out.println("Number of Sections is :" + numberOfSections);
 			
-			for(int i = 1 ; i <= j; i++){	// SECTION LOOP
-				for(int k = 1; k <= BitonicAssignment.N; k++){ //	Do Bitonic Merges
-					bitonicMerge();	
+			sectionCounter = x;
+			for(int i = 1 ; i <= numberOfSections; i++){	// SECTION LOOP
+				System.out.println("This is a Section");
+				System.out.println("Section Counter is :" + sectionCounter);
+				
+				for(int k = 1; k <= BitonicAssignment.N; k += sectionCounter){ //	Do Bitonic Merges
+					bitonicMerge(sectionCounter, k, direction);
+					direction = flipDirections(direction);
 				}
-				direction = flipDirections(direction);
+				sectionCounter /= 2;
 			}
+
+			numberOfSections+=1;
+			x*=2;
 		}
 	}
 	private static void part2(){
@@ -51,7 +61,7 @@ public class InstructionSetsGenerator {
 //			swapAndCompare(i, i + half);	//core
 			
 			// add a pair (instruction) to the comparator
-			System.out.println(i + "-" + (i+half)+"-" + direction + ",");
+			System.out.println("\t" + i + "-" + (i+half)+"-" + direction + ",");
 //			COMPARER_LIST.get(comparerCounter).instructions.append(i + "-" + (i+half)+"-" + direction + ",");
 			comparerCounter++;
 		}
