@@ -3,13 +3,16 @@ package samkeeleyong.mscs.week2;
 import static samkeeleyong.mscs.week2.BitonicAssignment.N;
 import static samkeeleyong.mscs.week2.BitonicAssignment.NUMBERS;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class InstructionSetsGenerator {
 	
 	static int comparerCounter = 0;
 	
 	public static void generateAndAssignInstructions() {
-//		part1();
+		part1();
 		part2();
 	}
 	
@@ -18,27 +21,35 @@ public class InstructionSetsGenerator {
 		int numberOfSections = 1; 
 		int direction = 1;
 		int sectionCounter = 2;
+		int directionCounterChecker = 1,
+			directionCounter = 1;
 		
 		while(x != BitonicAssignment.N){	// BLOCK LOOP 
-			System.out.println("\n\n\nThis Block: x is :" + x);
-			System.out.println("Number of Sections is :" + numberOfSections);
-			
-			sectionCounter = x;
-			for(int i = 1 ; i <= numberOfSections; i++){	// SECTION LOOP
-				System.out.println("This is a Section");
-				System.out.println("Section Counter is :" + sectionCounter);
-				
-				for(int k = 1; k <= BitonicAssignment.N; k += sectionCounter){ //	Do Bitonic Merges
-					bitonicMerge(sectionCounter, k, direction);
-					direction = flipDirections(direction);
-				}
-				sectionCounter /= 2;
-			}
 
+			sectionCounter = x;
+			directionCounterChecker = 1;
+			
+			for(int sectionLoopIndex = 1 ; sectionLoopIndex <= numberOfSections; sectionLoopIndex++){	// SECTION LOOP
+				for(int linePartLoopIndex = 1; linePartLoopIndex <= BitonicAssignment.N; linePartLoopIndex += sectionCounter){ //	Do Bitonic Merges
+					bitonicMerge(sectionCounter, linePartLoopIndex, direction);
+
+					if(directionCounterChecker == directionCounter){
+						direction = flipDirections(direction);
+						directionCounter = 1;
+					}else{
+						directionCounter++;
+					}
+				}
+				directionCounterChecker *= 2;
+				sectionCounter /= 2;
+				comparerCounter = 0;
+			}
+			
 			numberOfSections+=1;
 			x*=2;
 		}
 	}
+
 	private static void part2(){
 		int x = BitonicAssignment.N;
  
@@ -61,8 +72,10 @@ public class InstructionSetsGenerator {
 //			swapAndCompare(i, i + half);	//core
 			
 			// add a pair (instruction) to the comparator
-			System.out.println("\t" + i + "-" + (i+half)+"-" + direction + ",");
-//			COMPARER_LIST.get(comparerCounter).instructions.append(i + "-" + (i+half)+"-" + direction + ",");
+//			System.out.println(comparerCounter);
+//			System.out.println(comparerCounter + "-" + i + "-" + (i+half)+"-" + direction + ",");
+			
+			BitonicAssignment.COMPARER_LIST.get(comparerCounter).instructions.append(i + "-" + (i+half)+"-" + direction + ",");
 			comparerCounter++;
 		}
 	}

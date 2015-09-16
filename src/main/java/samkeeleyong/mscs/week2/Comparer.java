@@ -71,7 +71,8 @@ public class Comparer extends Thread{
 			}
 			
 		} catch(IndexOutOfBoundsException e){
-			System.out.println(myCounter);
+//			System.out.println(myCounter);
+//			just ignore this part
 		}
 		
 		myCounter++;
