@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class BitonicAssignment {
+public class BitonicSorter {
 	
 	
-	public static int[] NUMBERS = 
-								   {0, 1, 4, 6, 4, 9, 11, 12, 16,
-								   15, 14, 13, 12, 8, 5, 3, 2};
+	public static int[] NUMBERS = DataInitializer.getNumbers();
 	public static int N = NUMBERS.length - 1;
 	
 	// This variable must equal to N so that
@@ -26,10 +24,6 @@ public class BitonicAssignment {
 	public static final int TOTAL_BLOCKS = TOTAL_BLOCKS_PART1 + TOTAL_BLOCKS_PART2;;
 	
 	public static final boolean SHOULD_LOG = true; 
-	
-	public static void main(String[] args) throws InterruptedException{
-		new BitonicAssignment().process();
-	}
 	
 	public void process() throws InterruptedException{
 		
@@ -70,20 +64,20 @@ public class BitonicAssignment {
 		
 		for(int i = 1; i <= TOTAL_BLOCKS; i++){
 			
-			while(BitonicAssignment.ROUND_COUNTER.get() < N/2){
+			while(BitonicSorter.ROUND_COUNTER.get() < N/2){
 				// the other threads are still working			
 			}
 			
 			// wait for 
 			synchronized(this){
 				System.out.println("Threads are all stopped. Time to start them again, ROUND COUNTER IS " + ROUND_COUNTER.get());
-				BitonicAssignment.ROUND_COUNTER.set(0);
+				BitonicSorter.ROUND_COUNTER.set(0);
 				this.notifyAll();	
 				printNumbers("");
 			}
 			System.out.println("Next Round");
 		}
-		BitonicAssignment.IS_FINISHED = true;
+		BitonicSorter.IS_FINISHED = true;
 		Thread.sleep(1000);
 		System.out.println("FINISHED");
 		

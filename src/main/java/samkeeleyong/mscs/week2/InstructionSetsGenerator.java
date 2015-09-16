@@ -1,10 +1,6 @@
 package samkeeleyong.mscs.week2;
 
-import static samkeeleyong.mscs.week2.BitonicAssignment.N;
-import static samkeeleyong.mscs.week2.BitonicAssignment.NUMBERS;
-
-import java.util.HashSet;
-import java.util.Set;
+import static samkeeleyong.mscs.week2.BitonicSorter.N;
 
 
 public class InstructionSetsGenerator {
@@ -28,13 +24,13 @@ public class InstructionSetsGenerator {
 		int directionCounterChecker = 1,
 			directionCounter = 1;
 		
-		while(x != BitonicAssignment.N){	// BLOCK LOOP 
+		while(x != BitonicSorter.N){	// BLOCK LOOP 
 
 			sectionCounter = x;
 			directionCounterChecker = 1;
 			
 			for(int sectionLoopIndex = 1 ; sectionLoopIndex <= numberOfSections; sectionLoopIndex++){	// SECTION LOOP
-				for(int linePartLoopIndex = 1; linePartLoopIndex <= BitonicAssignment.N; linePartLoopIndex += sectionCounter){ //	Do Bitonic Merges
+				for(int linePartLoopIndex = 1; linePartLoopIndex <= BitonicSorter.N; linePartLoopIndex += sectionCounter){ //	Do Bitonic Merges
 					bitonicMerge(sectionCounter, linePartLoopIndex, direction);
 
 					if(directionCounterChecker == directionCounter){
@@ -59,7 +55,7 @@ public class InstructionSetsGenerator {
 	 *  do not open method fold if you don't want to cry
 	 */
 	private static void ADD_INSTRUCTIONS_TO_BITONIC_MERGE(){
-		int x = BitonicAssignment.N;
+		int x = BitonicSorter.N;
  
 		while (x != 1) {
 			int sectionCount = N / x, startSentinel = 0;
@@ -77,27 +73,19 @@ public class InstructionSetsGenerator {
 		
 		int half = length / 2;	//core
 		for (int i = start, k = 1; k <= half; i++, k++) {
-			BitonicAssignment.COMPARER_LIST.get(comparerCounter).instructions.append(i + "-" + (i+half)+"-" + direction + ",");
+			BitonicSorter.COMPARER_LIST.get(comparerCounter).instructions.append(i + "-" + (i+half)+"-" + direction + ",");
 			comparerCounter++;
 		}
 	}
 
 	/*
 	 *  Father, forgive me for this function
+	 *  probably should have been a string or 
+	 *  AN ENUMMMM ?????
+	 *  
+	 *  definitely an enum
 	 */
 	private static int flipDirections(int direction){
 		return direction == 1 ? 0: 1;
-	}
-	
-	/*
-	 * 
-	 *  Not used functions
-	 */
-	private static void swapAndCompare(int xpos, int ypos) {
-		if (NUMBERS[xpos] > NUMBERS[ypos]) {
-			int temp = NUMBERS[xpos];
-			NUMBERS[xpos] = NUMBERS[ypos];
-			NUMBERS[ypos] = temp;
-		}
 	}
 }

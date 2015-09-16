@@ -1,13 +1,13 @@
 package samkeeleyong.mscs.week2;
 
-import static samkeeleyong.mscs.week2.BitonicAssignment.NUMBERS;
+import static samkeeleyong.mscs.week2.BitonicSorter.NUMBERS;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Comparer extends Thread{
 
-	public Comparer(String name, BitonicAssignment LOCK){
+	public Comparer(String name, BitonicSorter LOCK){
 		this.name = name;
 		this.LOCK = LOCK;
 	}
@@ -26,14 +26,14 @@ public class Comparer extends Thread{
 
 	String name;
 	StringBuilder instructions = new StringBuilder();
-	final BitonicAssignment LOCK;
+	final BitonicSorter LOCK;
 	List<Integer> toSwaps = new ArrayList<Integer>();
 	int myCounter = 0;
 
 	@Override
 	public void run(){
 		
-		while(!BitonicAssignment.IS_FINISHED){
+		while(!BitonicSorter.IS_FINISHED){
 			synchronized(LOCK){
 				compare();
 				try {
@@ -76,6 +76,6 @@ public class Comparer extends Thread{
 		}
 		
 		myCounter++;
-		BitonicAssignment.ROUND_COUNTER.incrementAndGet();
+		BitonicSorter.ROUND_COUNTER.incrementAndGet();
 	}
 }
