@@ -12,11 +12,15 @@ public class InstructionSetsGenerator {
 	static int comparerCounter = 0;
 	
 	public static void generateAndAssignInstructions() {
-		part1();
-		part2();
+		ADD_INSTRUCTIONS_TO_CONVERT_TO_A_BITONIC_SEQUENCE();
+		ADD_INSTRUCTIONS_TO_BITONIC_MERGE();
 	}
 	
-	public static void part1(){
+	/*
+	 * creates swap instructions to create a bitonic SEQUENCE 
+	 * do not open method fold if you don't want to cry
+	 */
+	public static void ADD_INSTRUCTIONS_TO_CONVERT_TO_A_BITONIC_SEQUENCE(){
 		int x = 2;
 		int numberOfSections = 1; 
 		int direction = 1;
@@ -50,7 +54,11 @@ public class InstructionSetsGenerator {
 		}
 	}
 
-	private static void part2(){
+	/*
+	 *  creates swap instructions to create to do a bitonic MERGE
+	 *  do not open method fold if you don't want to cry
+	 */
+	private static void ADD_INSTRUCTIONS_TO_BITONIC_MERGE(){
 		int x = BitonicAssignment.N;
  
 		while (x != 1) {
@@ -69,12 +77,6 @@ public class InstructionSetsGenerator {
 		
 		int half = length / 2;	//core
 		for (int i = start, k = 1; k <= half; i++, k++) {
-//			swapAndCompare(i, i + half);	//core
-			
-			// add a pair (instruction) to the comparator
-//			System.out.println(comparerCounter);
-//			System.out.println(comparerCounter + "-" + i + "-" + (i+half)+"-" + direction + ",");
-			
 			BitonicAssignment.COMPARER_LIST.get(comparerCounter).instructions.append(i + "-" + (i+half)+"-" + direction + ",");
 			comparerCounter++;
 		}
@@ -97,13 +99,5 @@ public class InstructionSetsGenerator {
 			NUMBERS[xpos] = NUMBERS[ypos];
 			NUMBERS[ypos] = temp;
 		}
-	}
-
-	private static void printOutArr() {
-
-		for (int i = 1; i < NUMBERS.length; i++) {
-			System.out.print(NUMBERS[i] + ",");
-		}
-		System.out.println("\n");
 	}
 }

@@ -7,6 +7,6 @@ package samkeeleyong.mscs.week2;
 public class Scrap {
 	
 	public static void main(String[] args){
-		InstructionSetsGenerator.part1();
+		InstructionSetsGenerator.ADD_INSTRUCTIONS_TO_CONVERT_TO_A_BITONIC_SEQUENCE();
 	}
 }
