@@ -56,6 +56,7 @@ public class InstructionSetsGenerator {
 	 */
 	private static void ADD_INSTRUCTIONS_TO_BITONIC_MERGE(){
 		int x = BitonicSorter.N;
+		System.out.println(N);
  
 		while (x != 1) {
 			int sectionCount = N / x, startSentinel = 0;

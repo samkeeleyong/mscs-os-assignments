@@ -1,16 +1,18 @@
-package samkeeleyong.mscs.week2;
+package samkeeleyong.mscs.week3;
 
 import static samkeeleyong.mscs.week2.BitonicSorter.NUMBERS;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 
-public class Comparer extends Thread {
+public class BetterComparer extends Thread {
 
-	public Comparer(String name, Semaphore semaphore) {
+	public BetterComparer(String name, CyclicBarrier barrierPoint) {
 		this.name = name;
-		this.semaphore = semaphore;
+		this.barrierPoint = barrierPoint;
 	}
 
 	public void buildInstructionSet() {
@@ -28,21 +30,19 @@ public class Comparer extends Thread {
 
 	String name;
 	StringBuilder instructions = new StringBuilder();
-	Semaphore semaphore;
+	CyclicBarrier barrierPoint;
 	List<Integer> toSwaps = new ArrayList<Integer>();
 	int myCounter = 0;
-	BitonicSorter LOCK;
 
 	@Override
 	public void run() {
-
-		while (true) {
-			
-			semaphore.release();
-			compare();	
-
-			if(myCounter > toSwaps.size()){
-				return;
+		for (int i = 0; i < toSwaps.size() / 3; i++) {
+			compare();
+			try {
+				barrierPoint.await();
+			} catch (InterruptedException | BrokenBarrierException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
@@ -72,11 +72,8 @@ public class Comparer extends Thread {
 			}
 
 		} catch (IndexOutOfBoundsException e) {
-			// System.out.println(myCounter);
+//			 System.out.println(myCounter);
 			// just ignore this part
 		}
-
-		myCounter++;
-		BitonicSorter.ROUND_COUNTER.incrementAndGet();
 	}
 }
