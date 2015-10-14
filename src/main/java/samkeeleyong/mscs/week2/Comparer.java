@@ -1,29 +1,29 @@
 package samkeeleyong.mscs.week2;
 
-import static samkeeleyong.mscs.week2.BitonicSorter.NUMBERS;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class Comparer extends Thread {
 
-	public Comparer(String name, Semaphore semaphore) {
+	public Comparer(String name, Semaphore semaphore, BitonicSorter LOCK, List list) {
 		this.name = name;
 		this.semaphore = semaphore;
+		this.LOCK = LOCK;
+		toSwaps = list;
 	}
 
 	public void buildInstructionSet() {
 
-		String[] instructionsOfEachBlocks = this.instructions.toString().split(
-				",");
-		for (String strPair : instructionsOfEachBlocks) {
-			String[] pair = strPair.split("-");
-
-			toSwaps.add(Integer.parseInt(pair[0]));
-			toSwaps.add(Integer.parseInt(pair[1]));
-			toSwaps.add(Integer.parseInt(pair[2]));
-		}
+//		String[] instructionsOfEachBlocks = this.instructions.toString().split(
+//				",");
+//		for (String strPair : instructionsOfEachBlocks) {
+//			String[] pair = strPair.split("-");
+//
+//			toSwaps.add(Integer.parseInt(pair[0]));
+//			toSwaps.add(Integer.parseInt(pair[1]));
+//			toSwaps.add(Integer.parseInt(pair[2]));
+//		}
 	}
 
 	String name;
@@ -57,17 +57,17 @@ public class Comparer extends Thread {
 			direction = toSwaps.get(++myCounter);
 
 			if (direction == 1) {
-				if (NUMBERS[xpos] > NUMBERS[ypos]) {
-					int temp = NUMBERS[xpos];
-					NUMBERS[xpos] = NUMBERS[ypos];
-					NUMBERS[ypos] = temp;
+				if (LOCK.NUMBERS[xpos] > LOCK.NUMBERS[ypos]) {
+					int temp = LOCK.NUMBERS[xpos];
+					LOCK.NUMBERS[xpos] = LOCK.NUMBERS[ypos];
+					LOCK.NUMBERS[ypos] = temp;
 				}
 			}
 			if (direction == 0) {
-				if (NUMBERS[xpos] < NUMBERS[ypos]) {
-					int temp = NUMBERS[xpos];
-					NUMBERS[xpos] = NUMBERS[ypos];
-					NUMBERS[ypos] = temp;
+				if (LOCK.NUMBERS[xpos] < LOCK.NUMBERS[ypos]) {
+					int temp = LOCK.NUMBERS[xpos];
+					LOCK.NUMBERS[xpos] = LOCK.NUMBERS[ypos];
+					LOCK.NUMBERS[ypos] = temp;
 				}
 			}
 
@@ -77,6 +77,5 @@ public class Comparer extends Thread {
 		}
 
 		myCounter++;
-		BitonicSorter.ROUND_COUNTER.incrementAndGet();
 	}
 }

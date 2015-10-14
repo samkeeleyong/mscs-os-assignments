@@ -1,11 +1,10 @@
 package samkeeleyong.mscs.week3;
 
-import static samkeeleyong.mscs.week2.BitonicSorter.NUMBERS;
+import static samkeeleyong.mscs.week3.BitonicSorter.NUMBERS;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 
 public class BetterComparer extends Thread {
@@ -36,7 +35,7 @@ public class BetterComparer extends Thread {
 
 	@Override
 	public void run() {
-		for (int i = 0; i < toSwaps.size() / 3; i++) {
+		for (int i = 0; i < (toSwaps.size() / 3); i++) {
 			compare();
 			try {
 				barrierPoint.await();
@@ -70,10 +69,11 @@ public class BetterComparer extends Thread {
 					NUMBERS[ypos] = temp;
 				}
 			}
-
+//			System.out.println("compared!");
 		} catch (IndexOutOfBoundsException e) {
 //			 System.out.println(myCounter);
 			// just ignore this part
+//			e.printStackTrace();
 		}
 	}
 }

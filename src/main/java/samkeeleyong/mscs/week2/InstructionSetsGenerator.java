@@ -1,13 +1,12 @@
 package samkeeleyong.mscs.week2;
 
-import static samkeeleyong.mscs.week2.BitonicSorter.N;
-
-
 public class InstructionSetsGenerator {
 	
 	static int comparerCounter = 0;
+	BitonicSorter bs;
 	
-	public static void generateAndAssignInstructions() {
+	public void generateAndAssignInstructions(BitonicSorter bs) {
+		this.bs = bs;
 		ADD_INSTRUCTIONS_TO_CONVERT_TO_A_BITONIC_SEQUENCE();
 		ADD_INSTRUCTIONS_TO_BITONIC_MERGE();
 	}
@@ -16,7 +15,7 @@ public class InstructionSetsGenerator {
 	 * creates swap instructions to create a bitonic SEQUENCE 
 	 * do not open method fold if you don't want to cry
 	 */
-	public static void ADD_INSTRUCTIONS_TO_CONVERT_TO_A_BITONIC_SEQUENCE(){
+	public void ADD_INSTRUCTIONS_TO_CONVERT_TO_A_BITONIC_SEQUENCE(){
 		int x = 2;
 		int numberOfSections = 1; 
 		int direction = 1;
@@ -24,13 +23,13 @@ public class InstructionSetsGenerator {
 		int directionCounterChecker = 1,
 			directionCounter = 1;
 		
-		while(x != BitonicSorter.N){	// BLOCK LOOP 
+		while(x != bs.N){	// BLOCK LOOP 
 
 			sectionCounter = x;
 			directionCounterChecker = 1;
 			
 			for(int sectionLoopIndex = 1 ; sectionLoopIndex <= numberOfSections; sectionLoopIndex++){	// SECTION LOOP
-				for(int linePartLoopIndex = 1; linePartLoopIndex <= BitonicSorter.N; linePartLoopIndex += sectionCounter){ //	Do Bitonic Merges
+				for(int linePartLoopIndex = 1; linePartLoopIndex <= bs.N; linePartLoopIndex += sectionCounter){ //	Do Bitonic Merges
 					bitonicMerge(sectionCounter, linePartLoopIndex, direction);
 
 					if(directionCounterChecker == directionCounter){
@@ -54,13 +53,12 @@ public class InstructionSetsGenerator {
 	 *  creates swap instructions to create to do a bitonic MERGE
 	 *  do not open method fold if you don't want to cry
 	 */
-	private static void ADD_INSTRUCTIONS_TO_BITONIC_MERGE(){
-		int x = BitonicSorter.N;
-		System.out.println(N);
+	private void ADD_INSTRUCTIONS_TO_BITONIC_MERGE(){
+		int x = bs.N;
  
 		while (x != 1) {
-			int sectionCount = N / x, startSentinel = 0;
-			int startSentinelIncrement = N / sectionCount;
+			int sectionCount = bs.N / x, startSentinel = 0;
+			int startSentinelIncrement = bs.N / sectionCount;
 			for (int i = 1; i <= sectionCount; i++) {
 				bitonicMerge(x, 1 + startSentinel, 1);
 				startSentinel += startSentinelIncrement;
@@ -70,11 +68,11 @@ public class InstructionSetsGenerator {
 		}		
 	}
 
-	private static void bitonicMerge(int length, int start, int direction) {
+	private void bitonicMerge(int length, int start, int direction) {
 		
 		int half = length / 2;	//core
 		for (int i = start, k = 1; k <= half; i++, k++) {
-			BitonicSorter.COMPARER_LIST.get(comparerCounter).instructions.append(i + "-" + (i+half)+"-" + direction + ",");
+			bs.COMPARER_LIST.get(comparerCounter).instructions.append(i + "-" + (i+half)+"-" + direction + ",");
 			comparerCounter++;
 		}
 	}

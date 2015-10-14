@@ -1,6 +1,6 @@
 package samkeeleyong.mscs.week3;
 
-import static samkeeleyong.mscs.week2.BitonicSorter.N;
+import static samkeeleyong.mscs.week3.BitonicSorter.N;
 
 public class InstructionSetsGenerator {
 
